@@ -1,0 +1,58 @@
+version: "3.5"
+services:
+  eureka:
+    image: eureka:v1.0.0.20210310
+    container_name: eureka
+    env_file: eureka/environment.env
+    build:
+        context: ./eureka
+        dockerfile: Dockerfile
+    ports:
+      - "24499:24499"
+    networks:
+      - eurekadiscovery_network
+    restart: always
+      
+  gateway:
+    image: gateway:v1.0.0.20210310
+    container_name: gateway
+    env_file: gateway/environment.env
+    build:
+        context: ./gateway
+        dockerfile: Dockerfile
+    ports:
+      - "24500:24500"
+    networks:
+      - eurekadiscovery_network
+    restart: always
+      
+  service1:
+    image: service1:v1.0.0.20210310
+    container_name: service1
+    env_file: service1/environment.env
+    build:
+        context: ./service1
+        dockerfile: Dockerfile
+    ports:
+      - "24501:24501"
+    networks:
+      - eurekadiscovery_network
+    restart: always
+      
+  service2:
+    image: service2:v1.0.0.20210310
+    container_name: service2
+    env_file: service2/environment.env
+    build:
+        context: ./service2
+        dockerfile: Dockerfile
+    ports:
+      - "24502:24502"
+    networks:
+      - eurekadiscovery_network
+    restart: always
+
+networks:
+  eurekadiscovery_network:
+    name: eurekadiscovery_network
+    driver: bridge

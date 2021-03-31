@@ -1,0 +1,26 @@
+server:
+  port: 24500
+
+spring:
+  application:
+    name: services-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: service-1
+        uri: lb://SERVICE-1
+        predicates:
+        - Path=/services/service1/**
+        filters:
+         - RewritePath=/services/(?<service1>.*), /$\{service1}
+      - id: service-2
+        uri: lb://SERVICE-2
+        predicates:
+        - Path=/services/service2/**
+        filters:
+         - RewritePath=/services/(?<service2>.*), /$\{service2}
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: ${erukaserver:http://localhost:24499/eureka}
